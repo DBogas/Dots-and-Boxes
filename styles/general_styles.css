@@ -1,0 +1,31 @@
+html{
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    height: 90%;
+    width: 90%;
+    margin: auto;
+    background-image: url(whitey.png);
+}
+
+#container{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.container_member{
+    height: inherit;
+    width: inherit;
+    margin: auto;
+}
+
+
+
+
+
+
+
+

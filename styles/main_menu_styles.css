@@ -1,0 +1,17 @@
+#main_menu{
+    display: none;
+}
+
+.i_have_buttons{
+    align-content: center;
+    height: 50%;
+    width: 15%;
+    margin: auto;
+}
+
+.button_1{
+    display: block;
+    width: 100%;
+	margin: auto;
+	margin-top: 5%;
+}

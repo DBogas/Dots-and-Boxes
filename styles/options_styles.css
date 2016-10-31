@@ -1,0 +1,12 @@
+#options{
+    display: none;
+}
+
+#diffContainer{
+    width:10%;
+    margin:auto;
+}
+
+#radius {
+	text-align: left;
+}

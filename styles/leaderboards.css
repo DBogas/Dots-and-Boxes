@@ -1,0 +1,28 @@
+#leaderboards{
+    display: none;
+}
+
+.leaderboard{
+    display: inline-block;
+    margin: auto;
+    width: 15%;
+}
+
+caption{
+    align-self: auto;
+}
+
+.leaderboard tbody, thead{
+    margin: auto;
+    width: 100%;
+    display: table;
+   /* background-color: red;*/
+    border: 0.1em solid black;
+}
+
+.backfromboards{
+	display: block;
+    width: 20%;
+	margin: auto;
+	margin-top: 5%;
+}

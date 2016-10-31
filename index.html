@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title> Dots and Boxes </title>
+        <meta charset="utf-8">
+        
+        <link rel = "stylesheet" text = "text/css" href = "styles/general_styles.css">
+        <link rel = "stylesheet" text = "text/css" href = "styles/leaderboards.css">
+        <link rel = "stylesheet" text = "text/css" href = "styles/log_in_styles.css">
+        <link rel = "stylesheet" text = "text/css" href = "styles/main_menu_styles.css">
+        <link rel = "stylesheet" text = "text/css" href = "styles/multiplayer_styles.css">
+        <link rel = "stylesheet" text = "text/css" href = "styles/options_styles.css">
+        <link rel = "stylesheet" text = "text/css" href = "styles/single_player_game_styles.css">
+        
+        
+        
+        <script src = "scripts/menu_scripts.js"></script>
+        <script src = "scripts/single_player_scripts.js"></script>
+    </head>
+    
+    <body>
+        <div id = "container">
+            <div id = "log_in_div" class = "container_member">
+                <h1 class = "game_title"> Dots and Boxes </h1>
+                <form>
+                    ID: <br>
+                    <input type = "text" name = "id"> <br>
+                    Password: <br>
+                    <input type = "password" name = "pw"> <br>
+                </form>
+                <button id = "b1" class = "button_0" onclick="switchDiv('log_in_div','main_menu')">Login</button>
+            </div>
+            
+            <div id = "main_menu" class = "container_member">
+                <h1 class = "game_title"> Dots and Boxes </h1>
+                    <div class = "i_have_buttons">
+                        <button type = "button" class = "button_1" onclick="switchDiv('main_menu', 'singleplayer')"> Singleplayer </button>
+                        <button type = "button" class = "button_1" onclick="window.alert('Not available')"> Multiplayer </button>
+                        <button type = "button" class = "button_1" onclick="switchDiv('main_menu', 'options')"> Options </button>
+                        <button type = "button" class = "button_1" onclick="goToLeaderBoards()">Leaderboards</button>
+                        <button type = "button" class = "button_1" onclick="switchDiv('main_menu', 'log_in_div')"> Logout </button>
+                    </div>
+            </div>
+            
+            <div id = "singleplayer" class = "container_member">
+                <div class = "timer_and_score">
+                    <div class = "player">
+                        <p> Player 1 <span id="clock1">&nbsp;</span> Score: 0</p>
+                    </div>
+                        <button onclick = "startSingleGame()">Start Game</button>
+                    <div class = "player">
+                        <p> Super AI <span id="clock2">&nbsp;</span> Score: 0</p>
+                    </div>
+                </div>
+                <div class = "table_container">
+                    <table id = singlegametable></table>    
+                </div>
+                <button class = "backfromgame" onclick = "switchDiv('singleplayer','main_menu')">Go back.</button>
+            </div>
+            
+            <div id = "multiplayer" class = "container_member">
+                <div class = "timer_and_score"></div>
+                <div class = "table_container"></div>
+				<button class = "button_1" onclick = "switchDiv('multiplayer','main_menu')">Go back.</button>
+            </div>
+            
+            <div id = "options" class = "container_member">
+                    <h1>Select difficulty:</h1>
+                    <div id = "diffContainer">
+                        <form id="radius">
+                            <input type = radio value = "Beginner" name ="answer">Beginner<br>
+                            <input type = radio value = "Intermediate" name ="answer">Intermediate<br>
+                            <input type = radio value = "Advanced" name ="answer">Advanced<br>
+                            <input type = radio value = "Expert" checked = "true" name ="answer">Expert<br>
+                        </form>
+                        <button class = "button_1" onclick = "switchDiv('options','main_menu')">Go back.</button>
+                    </div>
+            </div>
+            
+            <div id = "leaderboards" class = "container_member">
+                <h1>Singleplayer</h1>
+                    <table id = "s1" class = "leaderboard"><caption>Beginner</caption></table>
+                    <table id = "s2" class = "leaderboard"><caption>Intermediate</caption></table>
+                    <table id = "s3" class = "leaderboard"><caption>Advanced</caption></table>
+                    <table id = "s4" class = "leaderboard"><caption>Expert</caption></table>
+                <h1>Multiplayer</h1>
+                    <table id = "m1" class = "leaderboard"><caption>Beginner</caption></table>
+                    <table id = "m2" class = "leaderboard"><caption>Intermediate</caption></table>
+                    <table id = "m3" class = "leaderboard"><caption>Advanced</caption></table>
+                    <table id = "m4" class = "leaderboard"><caption>Expert</caption></table>
+                <button class = "backfromboards" onclick = "switchDiv('leaderboards','main_menu')">Go back.</button>
+            </div>
+            
+            
+        </div>
+    </body>
+
+</html>
