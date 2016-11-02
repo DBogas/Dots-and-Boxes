@@ -34,7 +34,7 @@
 
 
 .table_container{
-    width: 100%;
+    width: 80%;
     height: 80%;
     margin: auto;
 }
@@ -44,4 +44,27 @@
     width: 50%;
     margin: auto;
     margin-top: 5%;
+}
+
+.dot{
+    height: 0.5em;
+    width: 0.5em;
+    background-color: black;
+    border-radius: 0.6em;
+}
+
+.vline{
+    height: 2em;
+}
+
+.vline:hover{
+    background-color: gray;
+}
+
+.hline{
+    width: 2em;
+}
+
+.hline:hover{
+    background-color: gray;
 }
