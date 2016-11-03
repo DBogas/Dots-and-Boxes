@@ -73,3 +73,14 @@ function createTable(gameHeight,gameWidth,tableID){
     }
     gametable.appendChild(tablebody);
 }
+
+// takes us back to the main mnu from the single player 
+function exitGame(){
+    // switch div
+    switchDiv('singleplayer','main_menu');
+    // destroy table
+    document.getElementById("singlegametable").innerHTML="";
+    //reset timers
+    resetPlayerTimer();
+    resetSuperAITimer();
+}
