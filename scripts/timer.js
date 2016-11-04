@@ -57,15 +57,15 @@ function stopSuperAITimer(){
 
 // reset timer
 function resetPlayerTimer(){
-    document.getElementById('clock1').firstChild.nodeValue = null;
     stopPlayerTimer();
+    document.getElementById('clock1').firstChild.nodeValue = null;
     currTime = 0;
-    PlayerTimer = null;
+    PlayerTimer = 0;
 }
 
 function resetSuperAITimer(){
-    document.getElementById('clock2').firstChild.nodeValue = null;
     stopSuperAITimer();
+    document.getElementById('clock2').firstChild.nodeValue = null;
     currTimeAI = 0;
-    SuperAITimer = null;
+    SuperAITimer = 0;
 }

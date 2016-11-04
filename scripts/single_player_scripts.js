@@ -28,6 +28,7 @@ function startSingleGame(){
             break;
     }
     //timers, player goes first
+    resetPlayerTimer();
     startDate = new Date();
     startPlayerTimer();
 }
