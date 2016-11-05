@@ -31,13 +31,12 @@ function startSingleGame() {
             break;
     }
     
-    flag = 'player1';
-    changeColor(flag);
-    
     //timers, player goes first
     resetPlayerTimer();
     startDate = new Date();
     startPlayerTimer();
+    
+    actualGameBeta();
 }
 
 
@@ -82,21 +81,65 @@ function createTable(gameHeight,gameWidth,tableID){
     gametable.appendChild(tablebody);
 }
 
-//change background on click
-function changeColor(flag){
+//Dots-and-Boxes v0.0.1
+function actualGameBeta() {
+    flag = 'player1';
+    changeColor(flag);
+    
     if(flag === 'player1'){
         $(".hline, .vline").click(function() {
-            $(this).css('background-color', 'blue');
+            switchPlayer(flag);
         });
     }
     else if(flag === 'AI'){
         $(".hline, .vline").click(function() {
-            $(this).css('background-color', 'red');
+            switchPlayer(flag);
         });
     }
 }
 
-// takes us back to the main mnu from the single player 
+
+//switches player
+function switchPlayer(turn) {
+    if(flag === 'player1') {
+        changeColor(flag);
+        stopPlayerTimer();
+        startSuperAITimer();
+    }
+    else if(flag === 'AI') {
+        changeColor(flag);
+        stopSuperAITimer();
+        continuePlayerTimer();
+    }
+}
+        
+//verifica se tabela esta preenchida
+function checkTable() {
+    $(".hline, .vline").each(function(index){
+        if($(this).css.background != 'blue'){
+            console.log('Empty');
+            return true;
+        }
+    });
+}
+
+//change background on click
+function changeColor(turn){
+    if(turn === 'player1'){           
+        $(".hline, .vline").click(function() {
+            $(this).css('background-color', 'blue');
+        });
+        flag = 'AI';
+    }
+    else if(turn === 'AI'){
+        $(".hline, .vline").click(function() {
+            $(this).css('background-color', 'red');
+        });
+        flag = 'player1';
+    }
+}
+
+// takes us back to the main menu from the single player 
 function exitGame(){
     // switch div
     switchDiv('singleplayer','main_menu');
