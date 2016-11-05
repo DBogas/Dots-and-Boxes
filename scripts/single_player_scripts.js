@@ -33,6 +33,7 @@ function startSingleGame() {
     
     //timers, player goes first
     resetPlayerTimer();
+    resetSuperAITimer();
     startDate = new Date();
     startPlayerTimer();
     
@@ -101,12 +102,12 @@ function actualGameBeta() {
 
 //switches player
 function switchPlayer(turn) {
-    if(flag === 'player1') {
+    if(flag === 'AI') {
         changeColor(flag);
         stopPlayerTimer();
-        startSuperAITimer();
+        continueSuperAITimer();
     }
-    else if(flag === 'AI') {
+    else if(flag === 'player1') {
         changeColor(flag);
         stopSuperAITimer();
         continuePlayerTimer();
