@@ -1,8 +1,11 @@
+//flags
+var flag;
+
 // method to create a new single game, still missing timer stuff, add when ready
-function startSingleGame(){
+function startSingleGame() {
     // obtain difficulty
     var radio = document.getElementById("radius");
-    for(var i=0;i<radio.length;i++){
+    for(var i=0;i<radio.length;i++) {
         if(radio[i].checked){
             var diffsetting = radio[i].value;
         }
@@ -27,6 +30,10 @@ function startSingleGame(){
              createGameTable(9,11,'singlegametable');
             break;
     }
+    
+    flag = 'player1';
+    changeColor(flag);
+    
     //timers, player goes first
     resetPlayerTimer();
     startDate = new Date();
@@ -73,6 +80,20 @@ function createTable(gameHeight,gameWidth,tableID){
         tablebody.appendChild(row);
     }
     gametable.appendChild(tablebody);
+}
+
+//change background on click
+function changeColor(flag){
+    if(flag === 'player1'){
+        $(".hline, .vline").click(function() {
+            $(this).css('background-color', 'blue');
+        });
+    }
+    else if(flag === 'AI'){
+        $(".hline, .vline").click(function() {
+            $(this).css('background-color', 'red');
+        });
+    }
 }
 
 // takes us back to the main mnu from the single player 
