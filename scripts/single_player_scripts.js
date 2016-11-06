@@ -124,7 +124,7 @@ function switchPlayer(turn) {
 function getCellIndex(cell) {
         var col = $(cell).parent().children().index($(cell));
         var row = $(cell).parent().parent().children().index($(cell).parent());
-        //alert('Row: ' + row + ', Column: ' + col);
+        alert('Row: ' + row + ', Column: ' + col);
         return {
             row: row,
             col: col
@@ -140,10 +140,46 @@ function checkSquares(r, c) {
             alert('SQUARED');
         }
     }
-    /*else if(c === table.rows[0].cells.length) {}
-    else if(r === table.rows.length) {}
-    else if(r === 0) {}
-    else {}*/
+    else if(c === table.rows[0].cells.length-1) {
+        if($('table tr').eq(r).find('td').eq(c-2).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c-1).hasClass('clicked')) {
+            $('table tr').eq(r).find('td').eq(c-1).css('background-color', 'yellow');
+            alert('SQUARED');
+        }
+    }
+    else if(r === table.rows.length-1) {
+        if($('table tr').eq(r-2).find('td').eq(c).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c+1).hasClass('clicked')) {
+            $('table tr').eq(r-1).find('td').eq(c).css('background-color', 'yellow');
+            alert('SQUARED');
+        }
+    }
+    else if(r === 0) {
+        if($('table tr').eq(r+2).find('td').eq(c).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c+1).hasClass('clicked')) {
+            $('table tr').eq(r+1).find('td').eq(c).css('background-color', 'yellow');
+            alert('SQUARED');
+        }
+    }
+    else {
+        if($('table tr').eq(r).find('td').eq(c).hasClass('hline')) {
+            if($('table tr').eq(r-2).find('td').eq(c).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c+1).hasClass('clicked')) {
+                $('table tr').eq(r-1).find('td').eq(c).css('background-color', 'yellow');
+                alert('SQUARED');
+            }
+            if($('table tr').eq(r+2).find('td').eq(c).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c+1).hasClass('clicked')) {
+                $('table tr').eq(r+1).find('td').eq(c).css('background-color', 'yellow');
+                alert('SQUARED');
+            }
+        }
+        else if($('table tr').eq(r).find('td').eq(c).hasClass('vline')) {
+            if($('table tr').eq(r).find('td').eq(c+2).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c+1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c+1).hasClass('clicked')) {
+                $('table tr').eq(r).find('td').eq(c+1).css('background-color', 'yellow');
+                alert('SQUARED');
+            }
+            if($('table tr').eq(r).find('td').eq(c-2).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c-1).hasClass('clicked')) {
+                $('table tr').eq(r).find('td').eq(c-1).css('background-color', 'yellow');
+                alert('SQUARED');
+            }
+        }
+    }
 }
         
 //verifica se tabela esta preenchida
