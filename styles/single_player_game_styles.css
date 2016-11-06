@@ -50,11 +50,13 @@
     height: 0.5em;
     width: 0.5em;
     background-color: black;
-    border-radius: 0.6em;
+    border-radius: 0.5em;
 }
 
 .vline{
     height: 2em;
+    border: 1px solid black;
+    border-radius: 0.5em;
 }
 
 .vline:hover{
@@ -63,6 +65,8 @@
 
 .hline{
     width: 2em;
+    border: 1px solid black;
+    border-radius: 0.5em;
 }
 
 .hline:hover{
@@ -71,4 +75,8 @@
 
 .clicked{
     pointer-events: none;
+}
+
+.square {
+    
 }

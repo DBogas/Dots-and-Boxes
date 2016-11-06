@@ -56,6 +56,7 @@ function createGameTable(gh,gw,tid){
             if(i%2==0 && j%2==0) cell.className = "dot";
             else if (i%2==0 && j%2!=0)cell.className ="hline";
             else if (i%2!=0 && j%2==0)cell.className ="vline";
+            else cell.className = "square";
             
             row.appendChild(cell);
         }
@@ -86,15 +87,20 @@ function createTable(gameHeight,gameWidth,tableID){
 function actualGameBeta() {
     flag = 'player1';
     changeColor(flag);
+    //getCellIndex();
     
     if(flag === 'player1'){
         $(".hline, .vline").click(function() {
             switchPlayer(flag);
+            var play = getCellIndex(this);
+            checkSquares(play.row, play.col);
         });
     }
     else if(flag === 'AI'){
         $(".hline, .vline").click(function() {
             switchPlayer(flag);
+            var play = getCellIndex(this);
+            checkSquares(play.row, play.col);
         });
     }
 }
@@ -112,6 +118,32 @@ function switchPlayer(turn) {
         stopSuperAITimer();
         continuePlayerTimer();
     }
+}
+
+//retorn indice da celula clicada
+function getCellIndex(cell) {
+        var col = $(cell).parent().children().index($(cell));
+        var row = $(cell).parent().parent().children().index($(cell).parent());
+        //alert('Row: ' + row + ', Column: ' + col);
+        return {
+            row: row,
+            col: col
+        };
+}
+
+//verificar se ha quadrados completados
+function checkSquares(r, c) {
+    var table = document.getElementById('singlegametable');
+    if(c === 0) {
+        if($('table tr').eq(r).find('td').eq(c+2).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c+1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c+1).hasClass('clicked')) {
+            $('table tr').eq(r).find('td').eq(c+1).css('background-color', 'yellow');
+            alert('SQUARED');
+        }
+    }
+    /*else if(c === table.rows[0].cells.length) {}
+    else if(r === table.rows.length) {}
+    else if(r === 0) {}
+    else {}*/
 }
         
 //verifica se tabela esta preenchida
