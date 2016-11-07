@@ -266,11 +266,9 @@ function checkSquares(r, c) {
 function checkTable() {   
     $(".hline, .vline").each(function(index){
         if($(this).hasClass('clicked')){
-            console.log('full');
             full = true;
         }
         else{
-            console.log("still has free space");
             full = false;
             return false;
         }

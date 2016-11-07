@@ -6,7 +6,7 @@ var currTime = 0;
 var currTimeAI = 0;
 
 // timer constructor
-function gameTimer(date, clock){
+function gameTimer(date, clock) {
 	var currentTime = (new Date - date);
 	var currentTimeEx = new Date(currentTime);
     if(clock === "clock1") currTime = currentTimeEx;
