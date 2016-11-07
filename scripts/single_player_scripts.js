@@ -1,7 +1,9 @@
 //flags
 var flag;
-var playerScore = 0;
-var AIScore = 0;
+var playerScore;
+var AIScore;
+var full;
+var gameOver;
 
 // method to create a new single game, still missing timer stuff, add when ready
 function startSingleGame() {
@@ -39,6 +41,8 @@ function startSingleGame() {
     startDate = new Date();
     startPlayerTimer();
     
+    playerScore = 0;
+    AIScore = 0;
     actualGameBeta();
 }
 
@@ -89,22 +93,17 @@ function createTable(gameHeight,gameWidth,tableID){
 function actualGameBeta() {
     flag = 'player1';
     changeColor(flag);
-    //getCellIndex();
     
-    if(flag === 'player1'){
-        $(".hline, .vline").click(function() {
-            switchPlayer(flag);
-            var play = getCellIndex(this);
-            checkSquares(play.row, play.col);
-        });
-    }
-    else if(flag === 'AI'){
-        $(".hline, .vline").click(function() {
-            switchPlayer(flag);
-            var play = getCellIndex(this);
-            checkSquares(play.row, play.col);
-        });
-    }
+
+    $(".hline, .vline").click(function() {
+        switchPlayer(flag);
+        var play = getCellIndex(this);
+        checkSquares(play.row, play.col);
+        if(checkTable()) {
+            finishGame();
+            alert('game over');
+        }
+    });
 }
 
 
@@ -263,18 +262,20 @@ function checkSquares(r, c) {
     }
 }
         
-//verifica esta preenchida
-function checkTable() {
+//verifica se tabela esta preenchida
+function checkTable() {   
     $(".hline, .vline").each(function(index){
         if($(this).hasClass('clicked')){
             console.log('full');
-            return true;
+            full = true;
         }
         else{
             console.log("still has free space");
+            full = false;
             return false;
         }
     });
+    return full;
 }
 
 //change player, mark cell as cliked
@@ -292,6 +293,19 @@ function changeColor(turn){
             $(this).addClass('clicked');
         });
         flag = 'player1';
+    }
+}
+
+//finalizar o jogo
+function finishGame() {
+    if(playerScore > AIScore){
+        alert("You: " + playerScore + "AI: " + AIScore + " " + "You Win");
+    }
+    else if(AIScore > playerScore) {
+        alert("You: " + playerScore + "AI: " + AIScore + " " + "You Lose");
+    }
+    else {
+        alert("You: " + playerScore + "AI: " + AIScore + " " + "It's a Draw");
     }
 }
 
