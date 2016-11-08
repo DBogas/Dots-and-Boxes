@@ -94,10 +94,6 @@ function actualGameBeta() {
     flag = 'player1';
     changeColor(flag);
     
-    testGame();
-}
-
-function testGame() {
     if(flag === 'player1') {
         $(".hline, .vline").click(function() { 
             var play = getCellIndex(this);
@@ -106,11 +102,9 @@ function testGame() {
             if(checkTable()) {
                 finishGame();
             }
+            AIPlay();
         });
-    }
-    if(flag === 'AI'){     
-        AIPlay();
-    }
+    };
 }
 
 //AI play
@@ -177,12 +171,15 @@ function checkSquares(r, c) {
                 case 'player1':
                     $('table tr').eq(r).find('td').eq(c+1).css('background-color', 'blue');
                     playerScore++;
+                    return true;
                     break;
                 case 'AI':
                     $('table tr').eq(r).find('td').eq(c+1).css('background-color', 'red');
                     AIScore++;
+                    return true;
                     break;
                 default:
+                    return true;
                     break;
             }
         }
@@ -193,12 +190,15 @@ function checkSquares(r, c) {
                 case 'player1':
                     $('table tr').eq(r).find('td').eq(c-1).css('background-color', 'blue');
                     playerScore++;
+                    return true;
                     break;
                 case 'AI':
                     $('table tr').eq(r).find('td').eq(c-1).css('background-color', 'red');
                     AIScore++;
+                    return true;
                     break;
                 default:
+                    return true;
                     break;
             }
         }
@@ -209,12 +209,15 @@ function checkSquares(r, c) {
                 case 'player1':
                     $('table tr').eq(r-1).find('td').eq(c).css('background-color', 'blue');
                     playerScore++;
+                    return true;
                     break;
                 case 'AI':
                     $('table tr').eq(r-1).find('td').eq(c).css('background-color', 'red');
                     AIScore++;
+                    return true;
                     break;
                 default:
+                    return true;
                     break;
             }
         }
@@ -225,12 +228,15 @@ function checkSquares(r, c) {
                 case 'player1':
                     $('table tr').eq(r+1).find('td').eq(c).css('background-color', 'blue');
                     playerScore++;
+                   return true;
                     break;
                 case 'AI':
                     $('table tr').eq(r+1).find('td').eq(c).css('background-color', 'red');
                     AIScore++;
+                   return true;
                     break;
                 default:
+                   return true;
                     break;
             }
         }
@@ -256,11 +262,14 @@ function checkSquares(r, c) {
                 case 'player1':
                     $('table tr').eq(r+1).find('td').eq(c).css('background-color', 'blue');
                     playerScore++;
+                        return true;
                     break;
                 case 'AI':
                     $('table tr').eq(r+1).find('td').eq(c).css('background-color', 'red');
                     AIScore++;
+                        return true;
                     break;
+                        return true;
                 default:
                     break;
             }
@@ -286,12 +295,15 @@ function checkSquares(r, c) {
                 case 'player1':
                     $('table tr').eq(r).find('td').eq(c-1).css('background-color', 'blue');
                     playerScore++;
+                        return true;
                     break;
                 case 'AI':
                     $('table tr').eq(r).find('td').eq(c-1).css('background-color', 'red');
                     AIScore++;
+                        return true;
                     break;
                 default:
+                        return true;
                     break;
             }
             }
