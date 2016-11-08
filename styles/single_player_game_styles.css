@@ -77,6 +77,6 @@
     pointer-events: none;
 }
 
-.square {
-    
+.clickedAI {
+    background-color: red;
 }

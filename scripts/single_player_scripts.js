@@ -1,5 +1,5 @@
 //flags
-var flag;
+var flag ;
 var playerScore;
 var AIScore;
 var full;
@@ -94,30 +94,77 @@ function actualGameBeta() {
     flag = 'player1';
     changeColor(flag);
     
-
-    $(".hline, .vline").click(function() {
+    if(flag === 'player1') {
+        /*play = AIPlay();    
         switchPlayer(flag);
-        var play = getCellIndex(this);
-        checkSquares(play.row, play.col);
-        if(checkTable()) {
-            finishGame();
-            alert('game over');
+            var play = getCellIndex(this);
+            checkSquares(play.row, play.col);
+            if(checkTable()) {
+                finishGame();
+            }*/
+        
+        
+        $(".hline, .vline").click(function() {
+            
+            var play = getCellIndex(this);
+            checkSquares(play.row, play.col);
+            if(checkTable()) {
+                finishGame();
+            }
+            switchPlayer(flag);
+        });
+    }
+    if(flag === 'AI'){
+        $(".hline, .vline").click(function() {
+            
+            var play = getCellIndex(this);
+            checkSquares(play.row, play.col);
+            if(checkTable()) {
+                finishGame();
+            }
+            switchPlayer(flag);
+        });
+        
+    }
+}
+
+//AI play
+function AIPlay() {
+    var table = document.getElementById('singlegametable');
+    var row = Math.floor((Math.random() * table.rows.length));
+    var col = Math.floor((Math.random() * table.rows[0].cells.length));
+    if($('table tr').eq(row).find('td').eq(col).hasClass('hline') || $('table tr').eq(row).find('td').eq(col).hasClass('vline')) {
+        if(!$('table tr').eq(row).find('td').eq(col).hasClass('clicked')) {
+            $('table tr').eq(row).find('td').eq(col).css('background-color', 'red');
+            $('table tr').eq(row).find('td').eq(col).addClass('clicked');
+            return {
+                row: row,
+                col: col
+            };
         }
-    });
+        else {
+            return AIPlay();
+        }
+    }
+    else {
+        return AIPlay();
+    }
 }
 
 
 //switches player
 function switchPlayer(turn) {
     if(flag === 'AI') {
-        changeColor(flag);
-        stopPlayerTimer();
-        continueSuperAITimer();
-    }
-    else if(flag === 'player1') {
+        flag = 'player1';
         changeColor(flag);
         stopSuperAITimer();
         continuePlayerTimer();
+    }
+    else if(flag === 'player1') {
+        flag = 'AI';
+        changeColor(flag);
+        stopPlayerTimer();
+        continueSuperAITimer();
     }
 }
 
@@ -283,14 +330,14 @@ function changeColor(turn){
             $(this).css('background-color', 'blue');
             $(this).addClass('clicked');
         });
-        flag = 'AI';
+        //flag = 'AI';
     }
     else if(turn === 'AI'){
         $(".hline, .vline").click(function() {
             $(this).css('background-color', 'red');
             $(this).addClass('clicked');
         });
-        flag = 'player1';
+        //flag = 'player1';
     }
 }
 
