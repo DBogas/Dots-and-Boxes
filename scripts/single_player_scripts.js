@@ -97,12 +97,15 @@ function actualGameBeta() {
     if(flag === 'player1') {
         $(".hline, .vline").click(function() { 
             var play = getCellIndex(this);
-            checkSquares(play.row, play.col);
-            switchPlayer(flag);
+            if(!checkSquares(play.row, play.col)) {
+                switchPlayer(flag);
+                AIPlay();
+            }
+            else flag = 'player1';
             if(checkTable()) {
                 finishGame();
             }
-            AIPlay();
+            
         });
     };
 }
@@ -116,8 +119,10 @@ function AIPlay() {
         if(!$('table tr').eq(row).find('td').eq(col).hasClass('clicked')) {
             $('table tr').eq(row).find('td').eq(col).css('background-color', 'red');
             $('table tr').eq(row).find('td').eq(col).addClass('clicked');
-            checkSquares(row, col);
-            switchPlayer(flag);
+            if(checkSquares(row, col)) {
+                AIPlay();
+            }
+            else switchPlayer(flag);
             if(checkTable()) {
                 finishGame();
             }
@@ -183,6 +188,7 @@ function checkSquares(r, c) {
                     break;
             }
         }
+        else return false;
     }
     else if(c === table.rows[0].cells.length-1) {
         if($('table tr').eq(r).find('td').eq(c-2).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c-1).hasClass('clicked')) {
@@ -202,6 +208,7 @@ function checkSquares(r, c) {
                     break;
             }
         }
+        else return false;
     }
     else if(r === table.rows.length-1) {
         if($('table tr').eq(r-2).find('td').eq(c).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c+1).hasClass('clicked')) {
@@ -221,6 +228,7 @@ function checkSquares(r, c) {
                     break;
             }
         }
+        else return false;
     }
     else if(r === 0) {
         if($('table tr').eq(r+2).find('td').eq(c).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c-1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c+1).hasClass('clicked')) {
@@ -240,6 +248,7 @@ function checkSquares(r, c) {
                     break;
             }
         }
+        else return false;
     }
     else {
         if($('table tr').eq(r).find('td').eq(c).hasClass('hline')) {
@@ -274,6 +283,7 @@ function checkSquares(r, c) {
                     break;
             }
             }
+            else return false;
         }
         else if($('table tr').eq(r).find('td').eq(c).hasClass('vline')) {
             if($('table tr').eq(r).find('td').eq(c+2).hasClass('clicked') && $('table tr').eq(r-1).find('td').eq(c+1).hasClass('clicked') && $('table tr').eq(r+1).find('td').eq(c+1).hasClass('clicked')) {
@@ -307,6 +317,7 @@ function checkSquares(r, c) {
                     break;
             }
             }
+            else return false;
         }
     }
 }
