@@ -94,37 +94,22 @@ function actualGameBeta() {
     flag = 'player1';
     changeColor(flag);
     
+    testGame();
+}
+
+function testGame() {
     if(flag === 'player1') {
-        /*play = AIPlay();    
-        switchPlayer(flag);
+        $(".hline, .vline").click(function() { 
             var play = getCellIndex(this);
             checkSquares(play.row, play.col);
-            if(checkTable()) {
-                finishGame();
-            }*/
-        
-        
-        $(".hline, .vline").click(function() {
-            
-            var play = getCellIndex(this);
-            checkSquares(play.row, play.col);
+            switchPlayer(flag);
             if(checkTable()) {
                 finishGame();
             }
-            switchPlayer(flag);
         });
     }
-    if(flag === 'AI'){
-        $(".hline, .vline").click(function() {
-            
-            var play = getCellIndex(this);
-            checkSquares(play.row, play.col);
-            if(checkTable()) {
-                finishGame();
-            }
-            switchPlayer(flag);
-        });
-        
+    if(flag === 'AI'){     
+        AIPlay();
     }
 }
 
@@ -137,10 +122,15 @@ function AIPlay() {
         if(!$('table tr').eq(row).find('td').eq(col).hasClass('clicked')) {
             $('table tr').eq(row).find('td').eq(col).css('background-color', 'red');
             $('table tr').eq(row).find('td').eq(col).addClass('clicked');
-            return {
+            checkSquares(row, col);
+            switchPlayer(flag);
+            if(checkTable()) {
+                finishGame();
+            }
+            /*return {
                 row: row,
                 col: col
-            };
+            };*/
         }
         else {
             return AIPlay();
