@@ -1,5 +1,5 @@
 //flags
-var flag ;
+var flag;
 var playerScore;
 var AIScore;
 var full;
@@ -41,6 +41,8 @@ function startSingleGame() {
     startDate = new Date();
     startPlayerTimer();
     
+    document.getElementById('score1').firstChild.nodeValue = 0;
+    document.getElementById('score2').firstChild.nodeValue = 0;
     playerScore = 0;
     AIScore = 0;
     actualGameBeta();
@@ -102,6 +104,7 @@ function actualGameBeta() {
                 AIPlay();
             }
             else flag = 'player1';
+            updateScore();
             if(checkTable()) {
                 finishGame();
             }
@@ -120,12 +123,15 @@ function AIPlay() {
             $('table tr').eq(row).find('td').eq(col).css('background-color', 'red');
             $('table tr').eq(row).find('td').eq(col).addClass('clicked');
             if(checkSquares(row, col)) {
+                updateScore();
+                if(checkTable()) {
+                finishGame();
+            }   
                 AIPlay();
             }
             else switchPlayer(flag);
-            if(checkTable()) {
-                finishGame();
-            }
+            
+            
             /*return {
                 row: row,
                 col: col
@@ -356,6 +362,8 @@ function changeColor(turn){
 
 //finalizar o jogo
 function finishGame() {
+    stopPlayerTimer();
+    stopSuperAITimer();
     if(playerScore > AIScore){
         alert("You: " + playerScore + "AI: " + AIScore + " " + "You Win");
     }
@@ -376,4 +384,17 @@ function exitGame(){
     //reset timers
     resetPlayerTimer();
     resetSuperAITimer();
+    document.getElementById('score1').firstChild.nodeValue = 0;
+    document.getElementById('score2').firstChild.nodeValue = 0;
+}
+
+function updateScore() {
+    /*if(playerScore > player) {
+        playerScore = player;
+    }
+    if(AIScore > AI) {
+        AIScore = AI;
+    }*/
+    document.getElementById('score1').firstChild.nodeValue = playerScore;
+    document.getElementById('score2').firstChild.nodeValue = AIScore;
 }

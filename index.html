@@ -48,15 +48,15 @@
             <div id = "singleplayer" class = "container_member">
                 <div class = "timer_and_score">
                     <div class = "player">
-                        <p> Player 1 <span id="clock1">&nbsp;</span> Score: 0</p>
+                        <p> Player 1 <span id="clock1">&nbsp;</span> Score: <span id="score1">&nbsp;</span></p>
                     </div>
                         <button onclick = "startSingleGame()">Start Game</button>
                     <div class = "player">
-                        <p> Super AI <span id="clock2">&nbsp;</span> Score: 0</p>
+                        <p> Super AI <span id="clock2">&nbsp;</span> Score: <span id="score2">&nbsp;</span></p>
                     </div>
                 </div>
                 <div class = "table_container">
-                    <table id = "singlegametable"></table>    
+                    <table id = "singlegametable" oncontextmenu = "return false;"></table>    
                     <button class = "backfromgame" onclick = "exitGame()">Go back</button>
                 </div>
                 
