@@ -364,6 +364,7 @@ function changeColor(turn){
 function finishGame() {
     stopPlayerTimer();
     stopSuperAITimer();
+    insertPlayer();
     if(playerScore > AIScore){
         alert("You: " + playerScore + "AI: " + AIScore + " " + "You Win");
     }
