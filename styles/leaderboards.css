@@ -3,16 +3,16 @@
 }
 
 .leaderboard{
-    display: inline-block;
+    display: block;
     margin: auto;
-    width: 15%;
+    width: 25%;
 }
 
 caption{
     align-self: auto;
 }
 
-.leaderboard tbody, thead{
+.leaderboard > tbody, .leaderboard > thead{
     margin: auto;
     width: 100%;
     display: table;
@@ -25,4 +25,22 @@ caption{
     width: 20%;
 	margin: auto;
 	margin-top: 5%;
+}
+
+.leaderboard > thead > td{
+    text-align: center;
+}
+
+.cell34 {
+    width: 25%;
+    text-align: center;
+}
+.cell1{
+    width: 10%;
+    text-align: center;
+}
+
+.cell2{
+    width: 40%;
+    text-align: center;
 }

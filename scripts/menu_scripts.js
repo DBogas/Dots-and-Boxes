@@ -35,12 +35,16 @@ function createLeaderboards() {
 	var row = leaderboardHead.insertRow(0);
 	var cell = row.insertCell(0);
 	cell.innerHTML = "Pos";
+    cell.className = "cell1";
 	var cell = row.insertCell(1);
 	cell.innerHTML = "Nome";
+    cell.className = "cell2";
 	var cell = row.insertCell(2);
 	cell.innerHTML = "Pontos";
+    cell.className = "cell34";
 	var cell = row.insertCell(3);
 	cell.innerHTML = "Tempo";
+    cell.className="cell34";
 	}
     updateLeaderBoards();
 }

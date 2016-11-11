@@ -82,8 +82,13 @@ function createTable(gameHeight,gameWidth,tableID){
         var row = document.createElement('tr');
         for(var j=0; j<gameWidth ;j++){
             var cell = document.createElement('td');
-            //cell.innerHTML = "-";
-            cell.className = "cell";
+            if(j===0) {
+                cell.className = "cell1";
+                cell.innerHTML = (i+1 + 'º');
+            }
+            else if(j===1)cell.className = "cell2";
+            else if (j===3 || j===4)cell.className = "cell34";
+            //cell.className = "cell";
             row.appendChild(cell);
         }
         tablebody.appendChild(row);
