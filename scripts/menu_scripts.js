@@ -42,5 +42,5 @@ function createLeaderboards() {
 	var cell = row.insertCell(3);
 	cell.innerHTML = "Tempo";
 	}
-    swag();
+    updateLeaderBoards();
 }
