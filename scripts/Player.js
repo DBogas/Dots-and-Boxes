@@ -9,6 +9,14 @@ function NewPlayer(pontos,tempo){
     this.nome = document.getElementById("id").value;
     this.pontos = pontos;
     this.tempo = tempo;
+    
+    var currentMinutes = currTime.getMinutes();
+	var currentSeconds = currTime.getSeconds();
+	
+	currentMinutes = (currentMinutes < 10 ? "0" : "") + currentMinutes;
+	currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+	
+	this.currentTimeString =  currentMinutes + ":" + currentSeconds;
 };
 // insert player in leaderboard
 // insert a player in the singlebeginner array if it can be inserted
@@ -50,27 +58,27 @@ function updateLeaderBoards(){
         $('#s1 tbody tr').eq(i).find('td').eq(0).text(i+1);
         $('#s1 tbody tr').eq(i).find('td').eq(1).text(SingleBeginner[i].nome);
         $('#s1 tbody tr').eq(i).find('td').eq(2).text(SingleBeginner[i].pontos);
-        $('#s1 tbody tr').eq(i).find('td').eq(3).text(SingleBeginner[i].tempo);
+        $('#s1 tbody tr').eq(i).find('td').eq(3).text(SingleBeginner[i].currentTimeString);
     }
     // intermidaite
     for(var i=0;i<SingleIntermedaite.length;i++){
         $('#s2 tbody tr').eq(i).find('td').eq(0).text(i+1);
         $('#s2 tbody tr').eq(i).find('td').eq(1).text(SingleIntermedaite[i].nome);
         $('#s2 tbody tr').eq(i).find('td').eq(2).text(SingleIntermedaite[i].pontos);
-        $('#s2 tbody tr').eq(i).find('td').eq(3).text(SingleIntermedaite[i].tempo);
+        $('#s2 tbody tr').eq(i).find('td').eq(3).text(SingleIntermedaite[i].currentTimeString);
     }
     //
     for(var i=0;i<SingleAdvanced.length;i++){
         $('#s3 tbody tr').eq(i).find('td').eq(0).text(i+1);
         $('#s3 tbody tr').eq(i).find('td').eq(1).text(SingleAdvanced[i].nome);
         $('#s3 tbody tr').eq(i).find('td').eq(2).text(SingleAdvanced[i].pontos);
-        $('#s3 tbody tr').eq(i).find('td').eq(3).text(SingleAdvanced[i].tempo);
+        $('#s3 tbody tr').eq(i).find('td').eq(3).text(SingleAdvanced[i].currentTimeString);
     }
     //
       for(var i=0;i<SingleExpert.length;i++){
         $('#s4 tbody tr').eq(i).find('td').eq(0).text(i+1);
         $('#s4 tbody tr').eq(i).find('td').eq(1).text(SingleExpert[i].nome);
         $('#s4 tbody tr').eq(i).find('td').eq(2).text(SingleExpert[i].pontos);
-        $('#s4 tbody tr').eq(i).find('td').eq(3).text(SingleExpert[i].tempo);
+        $('#s4 tbody tr').eq(i).find('td').eq(3).text(SingleExpert[i].currentTimeString);
     }
 }
