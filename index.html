@@ -20,6 +20,8 @@
         <script src = "scripts/single_player_scripts.js"></script>
         <script src = "scripts/timer.js"></script>
         <script src = "scripts/Player.js"></script>
+        
+        <script src = "2nd_stage_scripts/login.js"></script>
     </head>
     
     <body>
@@ -30,9 +32,10 @@
                     ID: <br>
                     <input type = "text" id = "id" maxlength="11"> <br>
                     Password: <br>
-                    <input type = "password" name = "pw"> <br>
+                    <input type = "password" id = "pw"> <br>
                 </form>
-                <button id = "b1" class = "button_0" onclick="switchDiv('log_in_div','main_menu')">Login</button>
+                <!-- "switchDiv('log_in_div','main_menu')" -->
+                <button id = "b1" class = "button_0" onclick="register_me()">Login</button>
             </div>
             
             <div id = "main_menu" class = "container_member">
