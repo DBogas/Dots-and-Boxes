@@ -172,9 +172,16 @@ function switchPlayer(turn) {
 function getCellIndex(cell) {
         var col = $(cell).parent().children().index($(cell));
         var row = $(cell).parent().parent().children().index($(cell).parent());
+        if($('table tr').eq(row).find('td').eq(col).hasClass('hline')) {
+            var o = 'h';
+        }
+        else if($('table tr').eq(row).find('td').eq(col).hasClass('vline')) {
+            var o = 'v';
+        }
         return {
             row: row,
-            col: col
+            col: col,
+            ori: o
         };
 }
 

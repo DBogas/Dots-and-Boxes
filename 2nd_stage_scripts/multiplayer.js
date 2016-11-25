@@ -1,18 +1,14 @@
-// exemplo de objecto a enviar {"name": "rprior", "pass": "segredo", "level": "beginner", "group": 7}
-// exemplo de objecto a receber {"game": 12345, "key": "98ae5aa10c051988759ae743b607ce21"}
-// devolve os parâmetro game e key para usar na invocação das outras funções
 var game_key;
 var game_ID;
 
 function joinGame(){
-    
     getDiff();
-    //vars
     var nome = document.getElementById("id").value.toString();
     var pw = document.getElementById("pw").value.toString();
     var lvl = difficulty.toLowerCase();
     var group = 42;
     var params = JSON.stringify({name: nome, pass: pw, level: lvl, group: group});
+    
     //request itself
     var join_req = new XMLHttpRequest();
     
@@ -67,11 +63,50 @@ function leave() {
         leave_req.send(params);
     }
 }
+/*{"name": "rprior", "game": 12345, "key": "98ae5aa10c051988759ae743b607ce21", "orient": "h", "row": 3, "col": 1}*/
+function notify(){
+    var o = play.ori;
+    var r = play.row;
+    var c = play.col;
+    var params = JSON.stringify({
+        name: username, 
+        game: game_ID,
+        key: game_key,
+        orient: o,
+        row: r,
+        col: c
+    });
     
+    var notify_req = new XMLHttpRequest();
+    
+    notify_req.onreadystatechange = function() {
+        
+        if(notify_req.readyState !== 4){return;}
+        
+        if(notify_req.status !== 200){
+            window.alert("Error - Bad Request, error: "+notify_req.status+" readystate: "+notify_req.readyState);
+            return;
+        }
+        
+        var sv_response = JSON.parse(notify_req.responseText);
+        
+        if(sv_response.error !== undefined) {
+            alert(sv_response.error);
+            return false;
+        }
+
+        return true;
+    }
+}
+
 function goToMult() {
     switchDiv('main_menu', 'multiplayer');
-    
     sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
+    updateGameState();
+}
+
+function updateGameState() {
+    
 }
 
 function ranking() {
