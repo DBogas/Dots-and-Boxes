@@ -1,7 +1,19 @@
+var difficulty;
+
 //div 1 is showing, div 2 is hidden, this method hides 1 and shows 2
 function switchDiv(div1, div2){
     document.getElementById(div1).style.display = "none";
     document.getElementById(div2).style.display = "block";
+}
+
+//returns diff
+function getDiff() {
+    var radio = document.getElementById("radius");
+    for(var i=0;i<radio.length;i++) {
+        if(radio[i].checked){
+            difficulty = radio[i].value.toLowerCase();
+        }
+    }
 }
 
 // builds the leader boards on demand

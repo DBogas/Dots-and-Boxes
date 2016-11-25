@@ -22,6 +22,7 @@
         <script src = "scripts/Player.js"></script>
         
         <script src = "2nd_stage_scripts/login.js"></script>
+        <script src="2nd_stage_scripts/multiplayer.js"></script>
     </head>
     
     <body>
@@ -42,7 +43,7 @@
                 <h1 class = "game_title"> Dots and Boxes </h1>
                     <div class = "i_have_buttons">
                         <button type = "button" class = "button_1" onclick="switchDiv('main_menu', 'singleplayer')"> Singleplayer </button>
-                        <button type = "button" class = "button_1" onclick="window.alert('Not available')"> Multiplayer </button>
+                        <button type = "button" class = "button_1" onclick="joinGame()"> Multiplayer </button>
                         <button type = "button" class = "button_1" onclick="switchDiv('main_menu', 'options')"> Options </button>
                         <button type = "button" class = "button_1" onclick="goToLeaderBoards()">Leaderboards</button>
                         <button type = "button" class = "button_1" onclick="switchDiv('main_menu', 'log_in_div')"> Logout </button>
@@ -67,9 +68,19 @@
             </div>
             
             <div id = "multiplayer" class = "container_member">
-                <div class = "timer_and_score"></div>
-                <div class = "table_container"></div>
-				<button class = "button_1" onclick = "switchDiv('multiplayer','main_menu')">Go back.</button>
+                <div class = "timer_and_score">
+                    <div class = "player">
+                        <p><span id="clock3">&nbsp;</span> Score: <span id="score3">&nbsp;</span></p>
+                    </div>
+                        <button onclick = "startSingleGame()">Start Game</button>
+                    <div class = "player">
+                        <p><span id="clock4">&nbsp;</span> Score: <span id="score4">&nbsp;</span></p>
+                    </div>
+                </div>
+                <div class = "table_container">
+                    <table id = "multigametable" oncontextmenu = "return false;"></table>
+				    <button class = "backfromgame" onclick = "switchDiv('multiplayer','main_menu')">Go back.</button>
+                </div>
             </div>
             
             <div id = "options" class = "container_member">
