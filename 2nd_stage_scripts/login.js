@@ -1,4 +1,4 @@
-function register_me(){
+function registerMe(){
 
 var nome = document.getElementById("id").value.toString();
 var pw = document.getElementById("pw").value.toString();
