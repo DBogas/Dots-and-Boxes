@@ -84,6 +84,16 @@ function notify(){
     var o = play.ori;
     var r = play.row;
     var c = play.col;
+    
+    if(r%2 === 0 && c%2 === 1) {
+        r = 1+r/2;
+        c = (c+1)/2;
+    }
+    else if(r%2 === 1 && c%2 === 0) {
+        r = (r+1)/2;
+        c = 1+c/2;
+    }
+    
     var params = JSON.stringify({
         name: username, 
         game: game_ID,
@@ -108,8 +118,10 @@ function notify(){
         
         if(sv_response.error !== undefined) {
             alert(sv_response.error);
+            updateGameState();
         }
         else console.log("jogada valida");
+        updateGameState();
     }
         
         notify_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/notify",true);
@@ -175,7 +187,7 @@ function goToMult() {
     player2Score = 0;
             
             updateGameState();
-        }
+        }   
         
         else alert(message.error);
     }
@@ -183,8 +195,6 @@ function goToMult() {
 
 function updateGameState() {
     //changeColor(turn);
-    
-    if(turn === username) {
         $(".hline, .vline").click(function() { 
             play = getCellIndex(this);
             console.log(play);
@@ -195,7 +205,6 @@ function updateGameState() {
                 AIPlay();
             }*/
         });
-    };
 }
 
 function ranking() {
