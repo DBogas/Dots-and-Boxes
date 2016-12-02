@@ -6,6 +6,7 @@ var player2;
 var turn;
 var player1Score;
 var player2Score;
+var play;
 
 function joinGame(){
     getDiff();
@@ -107,11 +108,13 @@ function notify(){
         
         if(sv_response.error !== undefined) {
             alert(sv_response.error);
-            return false;
         }
-
-        return true;
+        else console.log("jogada valida");
     }
+        
+        notify_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/notify",true);
+        notify_req.setRequestHeader("Content-type", "application/json"); 
+        notify_req.send(params);
 }
 
 function goToMult() {
@@ -170,14 +173,29 @@ function goToMult() {
     document.getElementById('score4').firstChild.nodeValue = 0;
     player1Score = 0;
     player2Score = 0;
+            
+            updateGameState();
+        }
         
         else alert(message.error);
     }
-    updateGameState();
 }
 
 function updateGameState() {
+    //changeColor(turn);
     
+    if(turn === username) {
+        $(".hline, .vline").click(function() { 
+            play = getCellIndex(this);
+            console.log(play);
+            notify();
+            
+            /*if(!checkSquares(play.row, play.col)) {
+                switchPlayer(flag);
+                AIPlay();
+            }*/
+        });
+    };
 }
 
 function ranking() {

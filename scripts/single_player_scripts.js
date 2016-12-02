@@ -356,14 +356,14 @@ function checkTable() {
 
 //change player, mark cell as cliked
 function changeColor(turn){
-    if(turn === 'player1'){           
+    if(turn === 'player1' || turn === username){           
         $(".hline, .vline").click(function() {
             $(this).css('background-color', 'blue');
             $(this).addClass('clicked');
         });
         //flag = 'AI';
     }
-    else if(turn === 'AI'){
+    else if(turn === 'AI' || turn === player2){
         $(".hline, .vline").click(function() {
             $(this).css('background-color', 'red');
             $(this).addClass('clicked');
