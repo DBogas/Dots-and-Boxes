@@ -121,7 +121,8 @@ function goToMult() {
         var message = JSON.parse(event.data);
         if(message.error === undefined) {
             player2 = message.opponent;
-            turn = message.turn;
+            if(message.turn = undefined )turn = username;
+            else turn = message.turn;
             //reset the table.
             document.getElementById('multigametable').innerHTML="";
             //build according to difficulty.
