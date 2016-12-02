@@ -121,8 +121,7 @@ function goToMult() {
         var message = JSON.parse(event.data);
         if(message.error === undefined) {
             player2 = message.opponent;
-            if(message.turn = undefined )turn = username;
-            else turn = message.turn;
+            turn = message.turn;
             //reset the table.
             document.getElementById('multigametable').innerHTML="";
             //build according to difficulty.
@@ -153,28 +152,24 @@ function goToMult() {
     resetPlayer1Timer();
     resetPlayer2Timer();
     startDate = new Date();
-            
-            if(turn === username) {
     startPlayer1Timer();
+            
+    if(turn === username) {
     
     document.getElementById('player1').firstChild.nodeValue = username;
     document.getElementById('player2').firstChild.nodeValue = player2;
-    document.getElementById('score3').firstChild.nodeValue = 0;
-    document.getElementById('score4').firstChild.nodeValue = 0;
-    player1Score = 0;
-    player2Score = 0;
+    
         }
             else {
-                startPlayer2Timer();
     
-    document.getElementById('player1').firstChild.nodeValue = username;
-    document.getElementById('player2').firstChild.nodeValue = player2;
+    document.getElementById('player1').firstChild.nodeValue = player2;
+    document.getElementById('player2').firstChild.nodeValue = username;
+        }
+            
     document.getElementById('score3').firstChild.nodeValue = 0;
     document.getElementById('score4').firstChild.nodeValue = 0;
     player1Score = 0;
     player2Score = 0;
-            }
-        }
         
         else alert(message.error);
     }
