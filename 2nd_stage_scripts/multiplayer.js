@@ -60,13 +60,17 @@ function leave() {
         }
         
         var sv_response = JSON.parse(leave_req.responseText);
-        if(gameIsRunning != false){
+        if(gameIsRunning === false){
             leave_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/leave",true);
             leave_req.setRequestHeader("Content-type", "application/json"); 
             leave_req.send(params);
         }
         else window.alert("You can't give up now!");
     }
+}
+
+function backFromMP(){
+    if(gameIsRunning===false)switchDiv('multiplayer','main_menu');
 }
 
 function notify(){
