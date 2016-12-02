@@ -1,5 +1,7 @@
 var game_key;
 var game_ID;
+// while waiting for oponent, this is false, when oponent arrives, this becomes true
+var gameIsRunning = false;
 
 function joinGame(){
     getDiff();
@@ -39,6 +41,7 @@ function joinGame(){
     join_req.send(params);
 }// end of method
 
+//only possible of still waiting for an oponent
 function leave() {
     var params = JSON.stringify({
         name: username,
@@ -57,13 +60,15 @@ function leave() {
         }
         
         var sv_response = JSON.parse(leave_req.responseText);
-        
-        leave_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/leave",true);
-        leave_req.setRequestHeader("Content-type", "application/json"); 
-        leave_req.send(params);
+        if(gameIsRunning != false){
+            leave_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/leave",true);
+            leave_req.setRequestHeader("Content-type", "application/json"); 
+            leave_req.send(params);
+        }
+        else window.alert("You can't give up now!");
     }
 }
-/*{"name": "rprior", "game": 12345, "key": "98ae5aa10c051988759ae743b607ce21", "orient": "h", "row": 3, "col": 1}*/
+
 function notify(){
     var o = play.ori;
     var r = play.row;
