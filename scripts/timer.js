@@ -4,6 +4,10 @@ var PlayerTimer;
 var SuperAITimer;
 var currTime = 0;
 var currTimeAI = 0;
+var player1Timer;
+var player2Timer;
+var currTime1 = 0;
+var currTime2 = 0;
 
 // timer constructor
 function gameTimer(date, clock) {
@@ -11,6 +15,8 @@ function gameTimer(date, clock) {
 	var currentTimeEx = new Date(currentTime);
     if(clock === "clock1") currTime = currentTimeEx;
     else if(clock === "clock2") currTimeAI = currentTimeEx;
+    else if(clock === "clock3") currTime1 = currentTimeEx;
+    else if(clock === "clock4") currTime2 = currentTimeEx;
     
     
 	var currentHours = currentTimeEx.getHours();
@@ -35,6 +41,14 @@ function startSuperAITimer(){
     SuperAITimer = setInterval(function() {gameTimer(auxDate, 'clock2');}, 1000);
 }
 
+function startPlayer1Timer(){
+    player1Timer = setInterval(function() {gameTimer(startDate, 'clock3');}, 1000);
+}
+
+function startPlayer2Timer(){
+    player2Timer = setInterval(function() {gameTimer(startDate, 'clock4');}, 1000);
+}
+
 // continue timer
 function continuePlayerTimer(){
     startDate = new Date(new Date() - currTime);
@@ -46,6 +60,16 @@ function continueSuperAITimer(){
     SuperAITimer = setInterval(function() {gameTimer(startDate, 'clock2');}, 1000);
 }
 
+function continuePlayer1Timer(){
+    startDate = new Date(new Date() - currTime1);
+    player1Timer = setInterval(function() {gameTimer(startDate, 'clock3');}, 1000);
+}
+
+function continuePlayer2Timer(){
+    startDate = new Date(new Date() - currTime2);
+    player2Timer = setInterval(function() {gameTimer(startDate, 'clock4');}, 1000);
+}
+
 // stop timer
 function stopPlayerTimer(){
     clearInterval(PlayerTimer);
@@ -53,6 +77,14 @@ function stopPlayerTimer(){
 
 function stopSuperAITimer(){
     clearInterval(SuperAITimer);
+}
+
+function stopPlayer1Timer(){
+    clearInterval(player1Timer);
+}
+
+function stopPlayer2Timer(){
+    clearInterval(player2Timer);
 }
 
 // reset timer
@@ -68,4 +100,18 @@ function resetSuperAITimer(){
     document.getElementById('clock2').firstChild.nodeValue = null;
     currTimeAI = 0;
     SuperAITimer = 0;
+}
+
+function resetPlayer1Timer(){
+    stopPlayer1Timer();
+    document.getElementById('clock3').firstChild.nodeValue = null;
+    currTime1 = 0;
+    player1Timer = 0;
+}
+
+function resetPlayer2Timer(){
+    stopPlayer2Timer();
+    document.getElementById('clock4').firstChild.nodeValue = null;
+    currTime2 = 0;
+    player2Timer = 0;
 }

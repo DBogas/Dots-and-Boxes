@@ -4,6 +4,8 @@ var game_ID;
 var gameIsRunning = false;
 var player2;
 var turn;
+var player1Score;
+var player2Score;
 
 function joinGame(){
     getDiff();
@@ -63,13 +65,14 @@ function leave() {
         }
         
         var sv_response = JSON.parse(leave_req.responseText);
-        if(gameIsRunning === false){
+    }
+    if(gameIsRunning === false){
             leave_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/leave",true);
             leave_req.setRequestHeader("Content-type", "application/json"); 
             leave_req.send(params);
+        backFromMP();
         }
-        else window.alert("You can't give up now!");
-    }
+    else alert("LUL");
 }
 
 function backFromMP(){
@@ -142,17 +145,34 @@ function goToMult() {
              createGameTable(9,11,'multigametable');
             break;
     }
+            
+            gameIsRunning = true;
     
     //timers, player goes first
-    resetPlayerTimer();
-    resetSuperAITimer();
+    resetPlayer1Timer();
+    resetPlayer2Timer();
     startDate = new Date();
-    startPlayerTimer();
+            
+            if(turn === username) {
+    startPlayer1Timer();
     
+    document.getElementById('player1').firstChild.nodeValue = username;
+    document.getElementById('player2').firstChild.nodeValue = player2;
     document.getElementById('score3').firstChild.nodeValue = 0;
     document.getElementById('score4').firstChild.nodeValue = 0;
-    playerScore = 0;
-    AIScore = 0;
+    player1Score = 0;
+    player2Score = 0;
+        }
+            else {
+                startPlayer2Timer();
+    
+    document.getElementById('player1').firstChild.nodeValue = username;
+    document.getElementById('player2').firstChild.nodeValue = player2;
+    document.getElementById('score3').firstChild.nodeValue = 0;
+    document.getElementById('score4').firstChild.nodeValue = 0;
+    player1Score = 0;
+    player2Score = 0;
+            }
         }
         
         else alert(message.error);
