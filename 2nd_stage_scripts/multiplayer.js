@@ -2,6 +2,8 @@ var game_key;
 var game_ID;
 // while waiting for oponent, this is false, when oponent arrives, this becomes true
 var gameIsRunning = false;
+var player2;
+var turn;
 
 function joinGame(){
     getDiff();
@@ -32,6 +34,7 @@ function joinGame(){
         else {
             game_key = sv_response.key;
             game_ID = sv_response.game;
+            console.log(sv_response);
             goToMult();
         }
     }
@@ -70,7 +73,7 @@ function leave() {
 }
 
 function backFromMP(){
-    if(gameIsRunning===false)switchDiv('multiplayer','main_menu');
+    if(gameIsRunning===false) switchDiv('multiplayer','main_menu');
 }
 
 function notify(){
@@ -111,6 +114,49 @@ function notify(){
 function goToMult() {
     switchDiv('main_menu', 'multiplayer');
     sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
+    sse.onmessage = function(event) {
+        var message = JSON.parse(event.data);
+        if(message.error === undefined) {
+            player2 = message.opponent;
+            turn = message.turn;
+            //reset the table.
+            document.getElementById('multigametable').innerHTML="";
+            //build according to difficulty.
+            
+            getDiff();
+            
+    switch(difficulty){
+        case "beginner":
+            createGameTable(2,3,'multigametable');
+            break;
+        case "intermediate":
+            createGameTable(4,5,'multigametable');
+            break;
+        case "advanced":
+            createGameTable(6,8,'multigametable');
+            break;
+        case "expert":
+            createGameTable(9,11,'multigametable');
+            break;
+        default:
+             createGameTable(9,11,'multigametable');
+            break;
+    }
+    
+    //timers, player goes first
+    resetPlayerTimer();
+    resetSuperAITimer();
+    startDate = new Date();
+    startPlayerTimer();
+    
+    document.getElementById('score3').firstChild.nodeValue = 0;
+    document.getElementById('score4').firstChild.nodeValue = 0;
+    playerScore = 0;
+    AIScore = 0;
+        }
+        
+        else alert(message.error);
+    }
     updateGameState();
 }
 
