@@ -310,14 +310,15 @@ function makeRequest(params){
 }// end method*/
 
 function ranking() {
-    makeRequest(JSON.stringify({level: "beginner"}));
-    makeRequest(JSON.stringify({level: "intermediate"}));
-    makeRequest(JSON.stringify({level: "advanced"}));
-    makeRequest(JSON.stringify({level: "expert"}));
+    makeRequest("beginner");
+    makeRequest("intermediate");
+    makeRequest("advanced");
+    makeRequest("expert");
 }
 
 function makeRequest(dif) {
     
+    var params = JSON.stringify({"level":dif});
     //request itself
     var ranking_req = new XMLHttpRequest();
     ranking_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8000/ranking",true);
@@ -346,7 +347,7 @@ function makeRequest(dif) {
         sv_response.ranking.sort();
         // escrever na tabela
         switch(dif){
-            case "Beginner":
+            case "beginner":
                 for(var i=0;i<sv_response.ranking.length;i++){
                     $('#m1 tbody tr').eq(i).find('td').eq(0).text(i+1);
                     $('#m1 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
@@ -354,7 +355,7 @@ function makeRequest(dif) {
                     $('#m1 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
                 }
             break;
-            case "Intermediate":
+            case "intermediate":
                 for(var i=0;i<sv_response.ranking.length;i++){
                     $('#m2 tbody tr').eq(i).find('td').eq(0).text(i+1);
                     $('#m2 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
@@ -362,7 +363,7 @@ function makeRequest(dif) {
                     $('#m2 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
                 }
             break;
-            case "Advanced":
+            case "advanced":
                 for(var i=0;i<sv_response.ranking.length;i++){
                     $('#m3 tbody tr').eq(i).find('td').eq(0).text(i+1);
                     $('#m3 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
@@ -370,7 +371,7 @@ function makeRequest(dif) {
                     $('#m3 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
                 }
             break;
-            case "Expert":
+            case "expert":
                 for(var i=0;i<sv_response.ranking.length;i++){
                     $('#m4 tbody tr').eq(i).find('td').eq(0).text(i+1);
                     $('#m4 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
@@ -388,7 +389,7 @@ function makeRequest(dif) {
         }
     }
     
-    ranking_req.send(dif);
+    ranking_req.send(params);
 }// end of join method
 
 function updateLeaderBoardsMP(dif){
