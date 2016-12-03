@@ -8,6 +8,7 @@ var player1Score;
 var player2Score;
 var play;
 
+
 function joinGame(){
     getDiff();
     var nome = document.getElementById("id").value.toString();
@@ -45,9 +46,9 @@ function joinGame(){
     join_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8000/join",true);
     join_req.setRequestHeader("Content-type", "application/json"); 
     join_req.send(params);
-}// end of method
+}// end of join method
 
-//only possible of still waiting for an oponent
+
 function leave() {
     var params = JSON.stringify({
         name: username,
@@ -73,17 +74,21 @@ function leave() {
             leave_req.send(params);
         backFromMP();
         }
-    else alert("LUL");
-}
+    else alert("You can't leave now!");
+}// end of leave method
 
 function backFromMP(){
     if(gameIsRunning===false) switchDiv('multiplayer','main_menu');
-}
+}// end of backFromMP method
 
 function notify(){
     var o = play.ori;
     var r = play.row;
     var c = play.col;
+    // backup variables
+    var bo = o;
+    var br = r;
+    var bc = c;
     
     if(r%2 === 0 && c%2 === 1) {
         r = 1+r/2;
@@ -120,14 +125,17 @@ function notify(){
             alert(sv_response.error);
             updateGameState();
         }
-        else console.log("jogada valida");
-        updateGameState();
+        else{
+            var color;
+            console.log("jogada valida");
+            updateGameState();
+        }
     }
         
         notify_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/notify",true);
         notify_req.setRequestHeader("Content-type", "application/json"); 
         notify_req.send(params);
-}
+}// end of notify method
 
 function goToMult() {
     switchDiv('main_menu', 'multiplayer');
@@ -137,68 +145,64 @@ function goToMult() {
         if(message.error === undefined) {
             player2 = message.opponent;
             turn = message.turn;
-            //reset the table.
             document.getElementById('multigametable').innerHTML="";
-            //build according to difficulty.
-            
             getDiff();
             
-    switch(difficulty){
-        case "beginner":
-            createGameTable(2,3,'multigametable');
-            break;
-        case "intermediate":
-            createGameTable(4,5,'multigametable');
-            break;
-        case "advanced":
-            createGameTable(6,8,'multigametable');
-            break;
-        case "expert":
-            createGameTable(9,11,'multigametable');
-            break;
-        default:
-             createGameTable(9,11,'multigametable');
-            break;
-    }
-            
+            switch(difficulty){
+                case "beginner":
+                    createGameTable(2,3,'multigametable');
+                    break;
+                case "intermediate":
+                    createGameTable(4,5,'multigametable');
+                    break;
+                case "advanced":
+                    createGameTable(6,8,'multigametable');
+                    break;
+                case "expert":
+                    createGameTable(9,11,'multigametable');
+                    break;
+                default:
+                    createGameTable(9,11,'multigametable');
+                break;
+            }
+            // 2 players -> build table -> game is running from now on
             gameIsRunning = true;
     
-    //timers, player goes first
-    resetPlayer1Timer();
-    resetPlayer2Timer();
-    startDate = new Date();
-    startPlayer1Timer();
+            //timers, player goes first
+            resetPlayer1Timer();
+            resetPlayer2Timer();
+            startDate = new Date();
+            startPlayer1Timer();
             
-    if(turn === username) {
-    
-    document.getElementById('player1').firstChild.nodeValue = username;
-    document.getElementById('player2').firstChild.nodeValue = player2;
-    
-        }
+            if(turn === username) {
+                document.getElementById('player1').firstChild.nodeValue = username;
+                document.getElementById('player2').firstChild.nodeValue = player2;
+            }
             else {
-    
-    document.getElementById('player1').firstChild.nodeValue = player2;
-    document.getElementById('player2').firstChild.nodeValue = username;
-        }
-            
-    document.getElementById('score3').firstChild.nodeValue = 0;
-    document.getElementById('score4').firstChild.nodeValue = 0;
-    player1Score = 0;
-    player2Score = 0;
-            
-            updateGameState();
-        }   
+                document.getElementById('player1').firstChild.nodeValue = player2;
+                document.getElementById('player2').firstChild.nodeValue = username;
+            }
+                document.getElementById('score3').firstChild.nodeValue = 0;
+                document.getElementById('score4').firstChild.nodeValue = 0;
+                player1Score = 0;
+                player2Score = 0;
+            }   
         
         else alert(message.error);
+        updateGameState();
     }
-}
+   
+}// end of method for 1st iteration of update
 
 function updateGameState() {
     //changeColor(turn);
         $(".hline, .vline").click(function() { 
             play = getCellIndex(this);
             console.log(play);
-            notify();
+            sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
+            sse.onmessage = function(event){
+                notify();
+            }
             
             /*if(!checkSquares(play.row, play.col)) {
                 switchPlayer(flag);
