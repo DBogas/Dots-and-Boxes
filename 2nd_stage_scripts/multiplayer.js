@@ -7,6 +7,7 @@ var turn;
 var player1Score;
 var player2Score;
 var play;
+var flag = 0;
 
 
 function joinGame(){
@@ -216,32 +217,84 @@ function updateGameState() {
             }
         }
         
-        console.log(sv_answer);
-        
         if(sv_answer.move.boxes != undefined) {
             if(sv_answer.turn === username) {
-                $('table tr').eq(2*sv_answer.move.boxes[0].toString(0)[0]-1).find('td').eq(2*sv_answer.move.boxes[0].toString(0)[1]-1).css('background-color', 'blue');
-                $('table tr').eq(2*sv_answer.move.boxes[1].toString(0)[0]-1).find('td').eq(2*sv_answer.move.boxes[1].toString(0)[1]-1).css('background-color', 'blue');
+                if(sv_answer.move.boxes.length === 1) {
+                    player1Score++;
+                    $('table tr').eq(2*sv_answer.move.boxes[0][0]-1).find('td').eq(2*sv_answer.move.boxes[0][1]-1).css('background-color', 'blue');
+                }
+                else if(sv_answer.move.boxes.length === 2) {
+                    player1Score = player1Score+2;
+                    $('table tr').eq(2*sv_answer.move.boxes[0][0]-1).find('td').eq(2*sv_answer.move.boxes[0][1]-1).css('background-color', 'blue');
+                    $('table tr').eq(2*sv_answer.move.boxes[1][0]-1).find('td').eq(2*sv_answer.move.boxes[1][1]-1).css('background-color', 'blue');
+                }          
             }
             else if(sv_answer.turn === player2) {
-                $('table tr').eq(2*sv_answer.move.boxes[0].Array[0]-1).find('td').eq(2*sv_answer.move.boxes[0].Array[1]-1).css('background-color', 'red');
-                $('table tr').eq(2*sv_answer.move.boxes[1].Array[0]-1).find('td').eq(2*sv_answer.move.boxes[1].Array[1]-1).css('background-color', 'red');
-            } 
+                if(sv_answer.move.boxes.length === 1) {
+                    player2Score++;
+                    $('table tr').eq(2*sv_answer.move.boxes[0][0]-1).find('td').eq(2*sv_answer.move.boxes[0][1]-1).css('background-color', 'red');
+                }
+                else if(sv_answer.move.boxes.length === 2) {
+                    player2Score = player2Score+2;
+                    $('table tr').eq(2*sv_answer.move.boxes[0][0]-1).find('td').eq(2*sv_answer.move.boxes[0][1]-1).css('background-color', 'red');
+                    $('table tr').eq(2*sv_answer.move.boxes[1][0]-1).find('td').eq(2*sv_answer.move.boxes[1][1]-1).css('background-color', 'red');
+                }              
+            }
+            
+            if(turn === username) {
+                document.getElementById('score3').firstChild.nodeValue = player1Score;
+                document.getElementById('score4').firstChild.nodeValue = player2Score;
+            }
+            else {
+                document.getElementById('score3').firstChild.nodeValue = player2Score;
+                document.getElementById('score4').firstChild.nodeValue = player1Score;
+            }
         }
+        else switchTimer();
+        
+        if(sv_answer.winner != undefined) {
+            if(sv_answer.winner === username) {
+                alert("gratz u won");
+            }
+            else if(sv_answer.winner === username && sv_answer.winner === player2) alert("Draw");
+            else alert("u succ");
+            
+            gameIsRunning = false;
+            stopPlayer1Timer();
+            stopPlayer2Timer(); 
+        }
+        
+        
     }// end of sse
   
 }// end of method
 
-function ranking() {
-    makeRequest(JSON.stringify({level: "beginner"}),"ranking");
-    makeRequest(JSON.stringify({level: "intermediate"}),"ranking");
-    makeRequest(JSON.stringify({level: "advanced"}),"ranking");
-    makeRequest(JSON.stringify({level: "expert"}),"ranking");
+//switches which timer is counting
+function switchTimer() {
+    if(flag === 0) {
+        stopPlayer1Timer();
+        continuePlayer2Timer();
+        flag = 1;
+    }
+    else if(flag === 1) {
+        stopPlayer2Timer();
+        continuePlayer1Timer();
+        flag = 0;
+    }
+}
+
+/*function ranking() {
+    makeRequest(JSON.stringify({level: "beginner"}));
+    makeRequest(JSON.stringify({level: "intermediate"}));
+    makeRequest(JSON.stringify({level: "advanced"}));
+    makeRequest(JSON.stringify({level: "expert"}));
 }
 // {name:asndas,joa:oabsdojabs}
-function makeRequest(params,afterbar){
-    var toSend = JSON.parse(params);
+function makeRequest(params){
+    //var toSend = JSON.parse(params);
     var request = new XMLHttpRequest();
+    request.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/ranking",true);
+    request.setRequestHeader("Content-type", "application/json");
     request.onreadystatechange = function() {
         if(request.readyState !== 4){return;}
         if(request.status !== 200){
@@ -250,10 +303,41 @@ function makeRequest(params,afterbar){
         }  
         var sv_response = JSON.parse(request.responseText);
         
-        request.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/"+afterbar,true);
-        request.setRequestHeader("Content-type", "application/json"); 
-        request.send(toSend);
+        request.send(params);
         window.alert(sv_response);
     }
     
-}// end method
+}// end method*/
+
+function ranking() {
+    makeRequest(JSON.stringify({level: "beginner"}));
+    makeRequest(JSON.stringify({level: "intermediate"}));
+    makeRequest(JSON.stringify({level: "advanced"}));
+    makeRequest(JSON.stringify({level: "expert"}));
+}
+
+function makeRequest(dif) {
+    
+    //request itself
+    var ranking_req = new XMLHttpRequest();
+    ranking_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8000/ranking",true);
+    ranking_req.setRequestHeader("Content-type", "application/json"); 
+    
+    ranking_req.onreadystatechange = function(){
+    
+        if(ranking_req.readyState !== 4){return;}
+        
+        if(ranking_req.status !== 200){
+            window.alert("Error - Bad Request, error: "+ranking_req.status+" readystate: "+ranking_req.readyState);
+            return;
+        }
+        
+        var sv_response = JSON.parse(ranking_req.responseText);
+        
+        if(sv_response.error !== undefined) {
+            alert(sv_response.error);
+        }
+    }
+    
+    ranking_req.send(dif);
+}// end of join method

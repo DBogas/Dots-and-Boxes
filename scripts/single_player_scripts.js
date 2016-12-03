@@ -402,12 +402,6 @@ function exitGame(){
 }
 
 function updateScore() {
-    /*if(playerScore > player) {
-        playerScore = player;
-    }
-    if(AIScore > AI) {
-        AIScore = AI;
-    }*/
     document.getElementById('score1').firstChild.nodeValue = playerScore;
     document.getElementById('score2').firstChild.nodeValue = AIScore;
 }
