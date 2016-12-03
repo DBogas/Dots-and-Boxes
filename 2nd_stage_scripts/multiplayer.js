@@ -19,6 +19,8 @@ function joinGame(){
     
     //request itself
     var join_req = new XMLHttpRequest();
+    join_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8000/join",true);
+    join_req.setRequestHeader("Content-type", "application/json"); 
     
     join_req.onreadystatechange = function(){
     
@@ -43,8 +45,6 @@ function joinGame(){
         }
     }
     
-    join_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8000/join",true);
-    join_req.setRequestHeader("Content-type", "application/json"); 
     join_req.send(params);
 }// end of join method
 
@@ -73,7 +73,7 @@ function leave() {
             leave_req.setRequestHeader("Content-type", "application/json"); 
             leave_req.send(params);
         backFromMP();
-        }
+    }
     else alert("You can't leave now!");
 }// end of leave method
 
@@ -82,14 +82,16 @@ function backFromMP(){
 }// end of backFromMP method
 
 function notify(){
+    // apanha o click do rato e define play
+    $(".hline, .vline").click(function() { 
+        play = getCellIndex(this);
+        console.log(play);
+    });
+    
     var o = play.ori;
     var r = play.row;
     var c = play.col;
-    // backup variables
-    var bo = o;
-    var br = r;
-    var bc = c;
-    
+
     if(r%2 === 0 && c%2 === 1) {
         r = 1+r/2;
         c = (c+1)/2;
@@ -109,6 +111,8 @@ function notify(){
     });
     
     var notify_req = new XMLHttpRequest();
+    notify_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/notify",true);
+    notify_req.setRequestHeader("Content-type", "application/json"); 
     
     notify_req.onreadystatechange = function() {
         
@@ -125,16 +129,10 @@ function notify(){
             alert(sv_response.error);
             updateGameState();
         }
-        else{
-            var color;
-            console.log("jogada valida");
-            updateGameState();
-        }
+        else console.log("jogada valida");
+        updateGameState();
     }
-        
-        notify_req.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/notify",true);
-        notify_req.setRequestHeader("Content-type", "application/json"); 
-        notify_req.send(params);
+    notify_req.send(params);
 }// end of notify method
 
 function goToMult() {
@@ -194,22 +192,27 @@ function goToMult() {
    
 }// end of method for 1st iteration of update
 
+// na parte dos winners, falta criar um record e manda-lo pro sv.
+// na parte do move, tem que se pintar o que diz na mensagem e fazer a verificação da troca de turno. ou nao, n sei.
 function updateGameState() {
-    //changeColor(turn);
-        $(".hline, .vline").click(function() { 
-            play = getCellIndex(this);
-            console.log(play);
-            sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
-            sse.onmessage = function(event){
-                notify();
+    sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
+    sse.onmessage = function(event){
+        var sv_answer = JSON.parse(event.data);
+        if(sv_answer.error === undefined){
+            if(sv_answer.move !== undefined){
+                // do move related stuff
             }
-            
-            /*if(!checkSquares(play.row, play.col)) {
-                switchPlayer(flag);
-                AIPlay();
-            }*/
-        });
-}
+            if(sv_answer.winner !== undefined){
+                if(winner === username){
+                    window.alert("Congrats, you won. time: "+sv_answer.move.time);
+                }
+                else window.alert("You lost, this time.");
+            }
+        }
+        else window.alert(sv_answer.error);
+    }// end of sse
+  
+}// end of method
 
 function ranking() {
     makeRequest(JSON.stringify({level: "beginner"}),"ranking");
