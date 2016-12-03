@@ -331,8 +331,57 @@ function makeRequest(dif) {
             window.alert("Error - Bad Request, error: "+ranking_req.status+" readystate: "+ranking_req.readyState);
             return;
         }
-        
+        /*
+         case "Beginner":
+            SingleBeginner.push(p1);
+            SingleBeginner.sort(function(a,b){if(a.pontos === b.pontos) return a.tempo-b.tempo; else return b.pontos - a.pontos;});
+            break;
+        */
         var sv_response = JSON.parse(ranking_req.responseText);
+        // organiza o array da resposta (pontos, caso de empate -> tempo)
+        /*sv_response.ranking.sort(function( sv_response[ranking[a]], sv_response[ranking[b]]){
+            if( sv_response[ranking[a]].boxes ===  sv_response[ranking[b]].boxes)return  sv_response[ranking[a]].time -  sv_response[ranking[b]].time; 
+            else return sv_response[ranking[b]].boxes -  ssv_response[ranking[a]].boxes;}
+                                );*/
+        sv_response.ranking.sort();
+        // escrever na tabela
+        switch(dif){
+            case "Beginner":
+                for(var i=0;i<sv_response.ranking.length;i++){
+                    $('#m1 tbody tr').eq(i).find('td').eq(0).text(i+1);
+                    $('#m1 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
+                    $('#m1 tbody tr').eq(i).find('td').eq(2).text(sv_response.ranking[i].boxes);
+                    $('#m1 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
+                }
+            break;
+            case "Intermediate":
+                for(var i=0;i<sv_response.ranking.length;i++){
+                    $('#m2 tbody tr').eq(i).find('td').eq(0).text(i+1);
+                    $('#m2 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
+                    $('#m2 tbody tr').eq(i).find('td').eq(2).text(sv_response.ranking[i].boxes);
+                    $('#m2 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
+                }
+            break;
+            case "Advanced":
+                for(var i=0;i<sv_response.ranking.length;i++){
+                    $('#m3 tbody tr').eq(i).find('td').eq(0).text(i+1);
+                    $('#m3 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
+                    $('#m3 tbody tr').eq(i).find('td').eq(2).text(sv_response.ranking[i].boxes);
+                    $('#m3 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
+                }
+            break;
+            case "Expert":
+                for(var i=0;i<sv_response.ranking.length;i++){
+                    $('#m4 tbody tr').eq(i).find('td').eq(0).text(i+1);
+                    $('#m4 tbody tr').eq(i).find('td').eq(1).text(sv_response.ranking[i].name);
+                    $('#m4 tbody tr').eq(i).find('td').eq(2).text(sv_response.ranking[i].boxes);
+                    $('#m4 tbody tr').eq(i).find('td').eq(3).text(sv_response.ranking[i].time);
+                }
+            break;
+            default:
+                alert ("Stuff happened!");
+                break;
+        }
         
         if(sv_response.error !== undefined) {
             alert(sv_response.error);
@@ -341,3 +390,9 @@ function makeRequest(dif) {
     
     ranking_req.send(dif);
 }// end of join method
+
+function updateLeaderBoardsMP(dif){
+    switch(dif){
+            
+    }
+}
