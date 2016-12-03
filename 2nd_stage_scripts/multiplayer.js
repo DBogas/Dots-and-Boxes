@@ -82,12 +82,6 @@ function backFromMP(){
 }// end of backFromMP method
 
 function notify(){
-    // apanha o click do rato e define play
-    $(".hline, .vline").click(function() { 
-        play = getCellIndex(this);
-        console.log(play);
-    });
-    
     var o = play.ori;
     var r = play.row;
     var c = play.col;
@@ -143,6 +137,7 @@ function goToMult() {
         if(message.error === undefined) {
             player2 = message.opponent;
             turn = message.turn;
+            
             document.getElementById('multigametable').innerHTML="";
             getDiff();
             
@@ -184,32 +179,55 @@ function goToMult() {
                 document.getElementById('score4').firstChild.nodeValue = 0;
                 player1Score = 0;
                 player2Score = 0;
-            }   
+            
+            $(".hline, .vline").click(function() { 
+                play = getCellIndex(this);
+                notify();
+            });
+            updateGameState();
+        }   
         
-        else alert(message.error);
-        updateGameState();
+        else alert(message.error);   
     }
-   
 }// end of method for 1st iteration of update
 
 // na parte dos winners, falta criar um record e manda-lo pro sv.
 // na parte do move, tem que se pintar o que diz na mensagem e fazer a verificação da troca de turno. ou nao, n sei.
 function updateGameState() {
-    sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
+    //sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
     sse.onmessage = function(event){
         var sv_answer = JSON.parse(event.data);
-        if(sv_answer.error === undefined){
-            if(sv_answer.move !== undefined){
-                // do move related stuff
+        var table = document.getElementById('multigametable');
+        
+        if(sv_answer.turn === username) {
+            if(sv_answer.move.orient === 'h') {
+                $('table tr').eq(2*(sv_answer.move.row-1)).find('td').eq(2*sv_answer.move.col-1).css('background-color', 'red');
             }
-            if(sv_answer.winner !== undefined){
-                if(winner === username){
-                    window.alert("Congrats, you won. time: "+sv_answer.move.time);
-                }
-                else window.alert("You lost, this time.");
+            else if(sv_answer.move.orient === 'v') {
+                $('table tr').eq(2*sv_answer.move.row-1).find('td').eq(2*(sv_answer.move.col-1)).css('background-color', 'red');
             }
         }
-        else window.alert(sv_answer.error);
+        else if(sv_answer.turn === player2) {
+            if(sv_answer.move.orient === 'h') {
+                $('table tr').eq(2*(sv_answer.move.row-1)).find('td').eq(2*sv_answer.move.col-1).css('background-color', 'blue');
+            }
+            else if(sv_answer.move.orient === 'v') {
+                $('table tr').eq(2*sv_answer.move.row-1).find('td').eq(2*(sv_answer.move.col-1)).css('background-color', 'blue');
+            }
+        }
+        
+        console.log(sv_answer);
+        
+        if(sv_answer.move.boxes != undefined) {
+            if(sv_answer.turn === username) {
+                $('table tr').eq(2*sv_answer.move.boxes[0].toString(0)[0]-1).find('td').eq(2*sv_answer.move.boxes[0].toString(0)[1]-1).css('background-color', 'blue');
+                $('table tr').eq(2*sv_answer.move.boxes[1].toString(0)[0]-1).find('td').eq(2*sv_answer.move.boxes[1].toString(0)[1]-1).css('background-color', 'blue');
+            }
+            else if(sv_answer.turn === player2) {
+                $('table tr').eq(2*sv_answer.move.boxes[0].Array[0]-1).find('td').eq(2*sv_answer.move.boxes[0].Array[1]-1).css('background-color', 'red');
+                $('table tr').eq(2*sv_answer.move.boxes[1].Array[0]-1).find('td').eq(2*sv_answer.move.boxes[1].Array[1]-1).css('background-color', 'red');
+            } 
+        }
     }// end of sse
   
 }// end of method
