@@ -162,7 +162,7 @@ function goToMult() {
             // 2 players -> build table -> game is running from now on
             gameIsRunning = true;
     
-            //timers, player goes first
+            //timers, player1 goes first
             resetPlayer1Timer();
             resetPlayer2Timer();
             startDate = new Date();
@@ -190,31 +190,19 @@ function goToMult() {
         
         else alert(message.error);   
     }
-}// end of method for 1st iteration of update
+}// end of method
 
-// na parte dos winners, falta criar um record e manda-lo pro sv.
-// na parte do move, tem que se pintar o que diz na mensagem e fazer a verificação da troca de turno. ou nao, n sei.
+//handles server response
 function updateGameState() {
-    //sse = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8000/update?name=" + username + "&game=" + game_ID + "&key=" + game_key);
     sse.onmessage = function(event){
         var sv_answer = JSON.parse(event.data);
         var table = document.getElementById('multigametable');
         
-        if(sv_answer.turn === username) {
-            if(sv_answer.move.orient === 'h') {
-                $('table tr').eq(2*(sv_answer.move.row-1)).find('td').eq(2*sv_answer.move.col-1).css('background-color', 'red');
-            }
-            else if(sv_answer.move.orient === 'v') {
-                $('table tr').eq(2*sv_answer.move.row-1).find('td').eq(2*(sv_answer.move.col-1)).css('background-color', 'red');
-            }
+        if(sv_answer.move.orient === 'h') {
+            $('table tr').eq(2*(sv_answer.move.row-1)).find('td').eq(2*sv_answer.move.col-1).css('background-color', 'black');
         }
-        else if(sv_answer.turn === player2) {
-            if(sv_answer.move.orient === 'h') {
-                $('table tr').eq(2*(sv_answer.move.row-1)).find('td').eq(2*sv_answer.move.col-1).css('background-color', 'blue');
-            }
-            else if(sv_answer.move.orient === 'v') {
-                $('table tr').eq(2*sv_answer.move.row-1).find('td').eq(2*(sv_answer.move.col-1)).css('background-color', 'blue');
-            }
+        else if(sv_answer.move.orient === 'v') {
+            $('table tr').eq(2*sv_answer.move.row-1).find('td').eq(2*(sv_answer.move.col-1)).css('background-color', 'black');
         }
         
         if(sv_answer.move.boxes != undefined) {
@@ -254,19 +242,16 @@ function updateGameState() {
         
         if(sv_answer.winner != undefined) {
             if(sv_answer.winner === username) {
-                alert("gratz u won");
+                alert("Congratulations, you won!");
             }
-            else if(sv_answer.winner === username && sv_answer.winner === player2) alert("Draw");
-            else alert("u succ");
+            else if(sv_answer.winner === username && sv_answer.winner === player2) alert("Great minds think alike! Draw!");
+            else alert("You lost, better luck next time!");
             
             gameIsRunning = false;
             stopPlayer1Timer();
             stopPlayer2Timer(); 
-        }
-        
-        
-    }// end of sse
-  
+        }       
+    }// end of sse  
 }// end of method
 
 //switches which timer is counting
@@ -282,32 +267,6 @@ function switchTimer() {
         flag = 0;
     }
 }
-
-/*function ranking() {
-    makeRequest(JSON.stringify({level: "beginner"}));
-    makeRequest(JSON.stringify({level: "intermediate"}));
-    makeRequest(JSON.stringify({level: "advanced"}));
-    makeRequest(JSON.stringify({level: "expert"}));
-}
-// {name:asndas,joa:oabsdojabs}
-function makeRequest(params){
-    //var toSend = JSON.parse(params);
-    var request = new XMLHttpRequest();
-    request.open("post", "http://twserver.alunos.dcc.fc.up.pt:8000/ranking",true);
-    request.setRequestHeader("Content-type", "application/json");
-    request.onreadystatechange = function() {
-        if(request.readyState !== 4){return;}
-        if(request.status !== 200){
-            window.alert("Error - Bad Request, error: "+request.status+" readystate: "+request.readyState);
-            return;
-        }  
-        var sv_response = JSON.parse(request.responseText);
-        
-        request.send(params);
-        window.alert(sv_response);
-    }
-    
-}// end method*/
 
 function ranking() {
     makeRequest("beginner");
@@ -391,9 +350,3 @@ function makeRequest(dif) {
     
     ranking_req.send(params);
 }// end of join method
-
-function updateLeaderBoardsMP(dif){
-    switch(dif){
-            
-    }
-}
