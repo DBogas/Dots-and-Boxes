@@ -7,28 +7,47 @@ var formidable = require('formidable');
 
 var validator = require('validator');
 
+var cors = require('cors');
+var express = require('express');
+
+var app = express();
+app.use(cors());
+
 var mysql = require('mysql');
+
+var db = mysql.createConnection({
+    host: 'localhost',
+    user: 'up201200296',
+    password: 'segredo',
+});
+
+db.connect(function(err)  {
+    if(err) console.log(err);
+    
+    var query = db.query('USE twdb;', function(err, result) {
+        if(err) console.log(err);
+    });
+});
+
+//chamar modulo crypto para encriptaçao de passwords
+var crypto = require('crypto');
+
+function createHash(pass) {
+    return crypto.createHash('md5').update('pass').digest('hex');
+}
+
+var chance = require('chance');
+var RSG = new chance();
+
+//register
+app.post('/register', function(request, response) {
+})
 
 //Lets define a port we want to listen to
 const PORT=8042; 
 
-//We need a function which handles requests and send response
-function handleRequest(request, response){
-    if(request.url === '/register' && request.method.toLowerCase() === 'post') {
-        var form = new formidable.IncomingForm();
-        form.parse(request, function(err, fields){
-            
-        });
-        response.end('It Works!! Path Hit: ' + request.url);
-    }
-    response.end('it works');
-}
-
-//Create a server
-var server = http.createServer(handleRequest);
-
 //Lets start our server
-server.listen(PORT, function() {
+var server = app.listen(PORT, '0.0.0.0', function() {
     //Callback triggered when server is successfully listening. Hurray!
-    console.log("Server listening on: http://localhost:%s", PORT);
+    console.log("Server listening on: http://%s:%s", server.address().address, PORT);
 });
