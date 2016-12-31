@@ -54,9 +54,22 @@ de acordo com a tabela Users : name, pass, salt
 */
 app.post('/register', function(request, response) {
     // validator stuff
-    var req = formidable.IncomingForm()
-    var req_name = req.fields.name;
-    var req_pass = req.fields.pass;
+    var req = new formidable.IncomingForm();
+    var req_name;
+    var req_pass;
+    req.parse(request,function(error,fields,files){
+        // ha mais que 1 campo
+        if(fields.lenght >0){
+            if(fields.name !== null) req_name = fields.name;
+            else response.json({"error":"You need a name!"});
+            if(fields.pass !== null) req_pass = fields.pass;
+            else response.json({"error":"You need a password!"});
+        }
+        else{
+            response.json({"error":"You need to learn your login credentials."});
+        }
+    });
+    console.log("name: "+req_name+" pass: "+req_pass+".");
     // se o nome for valido -> aqui ainda so se esta a sanitizar o nome
     if(validator.escape(req_name).toString != null){
         //fazer uma query com o nome do pedido
