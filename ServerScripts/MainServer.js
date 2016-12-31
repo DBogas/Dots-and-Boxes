@@ -15,7 +15,7 @@ var db = mysql.createConnection({
     host: 'localhost',
     // credenciais 1
     user: 'up201200296',
-    password: 'segredo',
+    password: 'segredo'
     
     // credenciais 2
     //user: 'up201202482'
@@ -54,8 +54,9 @@ de acordo com a tabela Users : name, pass, salt
 */
 app.post('/register', function(request, response) {
     // validator stuff
-    var req_name = request.body.name;
-    var req_pass = request.body.pass;
+    var req = formidable.IncomingForm()
+    var req_name = req.fields.name;
+    var req_pass = req.fields.pass;
     // se o nome for valido -> aqui ainda so se esta a sanitizar o nome
     if(validator.escape(req_name).toString != null){
         //fazer uma query com o nome do pedido
@@ -71,11 +72,11 @@ app.post('/register', function(request, response) {
                 // caso afirmativo
                 if(createHash(pass+player.salt) == user.pass){
                     // resposta vazia para estar de acordo com a segunda etapa
-                    response.toJson({});
+                    response.json({});
                 }
                 // se der asneira, responder como manda a segnda etapa
                 else{
-                    response.toJson({"error": "User registered with a different password"});
+                    response.json({"error": "User registered with a different password"});
                 }
             }
             // se nao obtivermos uma resposta, temos de inserir um novo user na nossa database
@@ -92,14 +93,14 @@ app.post('/register', function(request, response) {
                         console.log("Error: "+error);
                     }
                     //resposta vazia caso contrario
-                    response.toJson({});
+                    response.json({});
                 });
             }
         });
     }
     // tudo o que esta acima se o nome de user for valido. se nao for:
-    else response.toJson({error:"Jogador inválido"});
-}
+    else response.json({error:"Jogador inválido"});
+});
 
 
 
