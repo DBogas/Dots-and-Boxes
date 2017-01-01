@@ -38,7 +38,7 @@ db.connect(function(error)  {
 var crypto = require('crypto');
 
 function createHash(pass) {
-    return crypto.createHash('md5').update('pass').digest('hex');
+    return crypto.createHash('md5').update(pass).digest('hex');
 }
 
 var RSG = new chance();
@@ -70,7 +70,7 @@ app.post('/register', function(request, response) {
                 console.log("User exists");
                 var player = answer[0];
                 
-                if(createHash(req_pass + player.salt) === player.pass) {
+                if(createHash(req_pass + player.salt) == player.pass) {
                     console.log("Success");
                     response.json({});
                 }
@@ -86,7 +86,7 @@ app.post('/register', function(request, response) {
                 var playerHash = createHash(req_pass + playerSalt);
                 
                 var post = {name : req_name, pass : playerHash, salt : playerSalt};
-                var query = db.query('insert into Users set ?', [post], function(err, result) {
+                var query = db.query('insert into Users set ?', [post], function(err, answer) {
                     if(err) console.log(err);
                     console.log("User registred");
                     response.json({});
@@ -99,7 +99,13 @@ app.post('/register', function(request, response) {
     }
 });
 
-
+app.post('/ranking', function(request, response) {
+    var diff = request.body.level;
+    var query = db.query('SELECT * FROM Rankings WHERE level = ? ORDER BY score DESC, timestamp ASC LIMIT 10;', [diff], function(err, answer) {
+		if (err) console.log(err);
+		response.json({"ranking":answer});
+	});
+});
 
 //Lets define a port we want to listen to
 const PORT=8042; 
