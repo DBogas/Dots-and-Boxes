@@ -81,7 +81,7 @@ app.post('/register', function(request, response) {
                 }
                 //password doens't fit
                 else {
-                    console.log("dats wrung");
+                    console.log("Wrong password");
                     response.json({"error": "Utilizador registado com password diferente"});
                 }
             }
