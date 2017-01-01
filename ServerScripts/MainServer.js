@@ -101,7 +101,7 @@ app.post('/register', function(request, response) {
 
 app.post('/ranking', function(request, response) {
     var diff = request.body.level;
-    var query = db.query('SELECT * FROM Rankings WHERE level = ? ORDER BY score DESC, timestamp ASC LIMIT 10;', [diff], function(err, answer) {
+    var query = db.query('SELECT * FROM Rankings WHERE level = ? ORDER BY boxes DESC, time ASC LIMIT 10;', [diff], function(err, answer) {
 		if (err) console.log(err);
 		response.json({"ranking":answer});
 	});

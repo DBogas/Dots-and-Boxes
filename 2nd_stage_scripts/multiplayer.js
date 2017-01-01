@@ -280,7 +280,7 @@ function makeRequest(dif) {
     var params = JSON.stringify({"level":dif});
     //request itself
     var ranking_req = new XMLHttpRequest();
-    ranking_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8000/ranking",true);
+    ranking_req.open("post","http://twserver.alunos.dcc.fc.up.pt:8042/ranking",true);
     ranking_req.setRequestHeader("Content-type", "application/json"); 
     
     ranking_req.onreadystatechange = function(){
