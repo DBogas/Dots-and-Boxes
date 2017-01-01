@@ -7,24 +7,29 @@ var cors = require('cors');
 var express = require('express');
 var mysql = require('mysql');
 var chance = require('chance');
+var parser = require('body-parser');
 
 var app = express();
 app.use(cors());
+app.use(parser.json());
+app.use(parser.urlencoded( {
+    extended: true
+}));
 
 var db = mysql.createConnection({
     host: 'localhost',
     // credenciais 1
     user: 'up201200296',
-    password: 'segredo'
+    password: 'kappa123',
     
     // credenciais 2
     //user: 'up201202482'
 });
 
 db.connect(function(error)  {
-    if(error) console.log("Error: "+error);
+    if(error) console.log(error);
     
-    var query = db.query('USE twdb;', function(err, result) {
+    var query = db.query('USE up201200296;', function(err, result) {
         if(err) console.log(err);
     });
 });
@@ -54,65 +59,44 @@ de acordo com a tabela Users : name, pass, salt
 */
 app.post('/register', function(request, response) {
     // validator stuff
-    var req = new formidable.IncomingForm();
-    var req_name;
-    var req_pass;
-    req.parse(request,function(error,fields,files){
-        // ha mais que 1 campo
-        if(fields.lenght >0){
-            if(fields.name !== null) req_name = fields.name;
-            else response.json({"error":"You need a name!"});
-            if(fields.pass !== null) req_pass = fields.pass;
-            else response.json({"error":"You need a password!"});
-        }
-        else{
-            response.json({"error":"You need to learn your login credentials."});
-        }
-    });
-    console.log("name: "+req_name+" pass: "+req_pass+".");
-    // se o nome for valido -> aqui ainda so se esta a sanitizar o nome
-    if(validator.escape(req_name).toString != null){
-        //fazer uma query com o nome do pedido
-        var query_this = dc.query("select * from Users where name = ?",[name],function(error,answer){
-            // error handling
-            if(error){
-                console.log("Error occurred: "+error);
-            }
-            // se tivermos uma resposta
-            if(answer.length > 0){
+    var req_name = request.body.name;
+    var req_pass = request.body.pass;
+    
+    if(validator.isAlphanumeric(req_name)) {
+        var query_this = db.query('select * from Users where name = ?', [req_name], function(err, answer) {
+            if(err) console.log(err);
+            
+            if(answer.length > 0) {
+                console.log("User exists");
                 var player = answer[0];
-                // agora verificar se a pass esta certa
-                // caso afirmativo
-                if(createHash(pass+player.salt) == user.pass){
-                    // resposta vazia para estar de acordo com a segunda etapa
+                
+                if(createHash(req_pass + player.salt) === player.pass) {
+                    console.log("Success");
                     response.json({});
                 }
-                // se der asneira, responder como manda a segnda etapa
-                else{
-                    response.json({"error": "User registered with a different password"});
+                else {
+                    console.log("dats wrung");
+                    response.json({"error": "Utilizador registado com password diferente"});
                 }
             }
-            // se nao obtivermos uma resposta, temos de inserir um novo user na nossa database
-            else{
-                //criar o salt e a hash
-                var player_salt = chance.string({lenght:4});
-                var player_hash = createHash(pass + salt);
-                //espetar com o novo player na database
-                var annex_this = {name: name, pass: player_hash, salt: player_salt};
-                //fazer uma query onde se introduz o novo user
-                var insert_query =db.query("INSERT INTO Users SET ?",annex_this,function(error, answer){
-                    // caso de asneira ao introduzir
-                    if(error){
-                        console.log("Error: "+error);
-                    }
-                    //resposta vazia caso contrario
+            else {
+                console.log("New user");
+                
+                var playerSalt = RSG.string({length : 4});
+                var playerHash = createHash(req_pass + playerSalt);
+                
+                var post = {name : req_name, pass : playerHash, salt : playerSalt};
+                var query = db.query('insert into Users set ?', [post], function(err, result) {
+                    if(err) console.log(err);
+                    console.log("User registred");
                     response.json({});
                 });
             }
         });
     }
-    // tudo o que esta acima se o nome de user for valido. se nao for:
-    else response.json({error:"Jogador inválido"});
+    else {
+        response.json({"erro": "Jogador invalido"});
+    }
 });
 
 
